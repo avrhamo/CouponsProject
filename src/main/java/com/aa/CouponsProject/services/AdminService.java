@@ -8,9 +8,10 @@ import com.aa.CouponsProject.exceptions.CouponSystemCustomExceptions;
 import java.util.List;
 
 public interface AdminService {
+
     //Company CRUD
     void addCompany(Company company) throws CouponSystemCustomExceptions;
-    void updateCompany(int companyId, Company company);
+    void updateCompany(int companyId, Company company) throws CouponSystemCustomExceptions;
     void deleteCompany(int companyId);
     List<Company> getAllCompanies();
     Company getSingleCompany(int companyId);

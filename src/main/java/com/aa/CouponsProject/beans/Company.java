@@ -21,8 +21,8 @@ public class Company {
     private String password;
 
     @OneToMany(mappedBy = "company")
-//    @OneToMany
     @Singular
+    @ToString.Exclude
     private List<Coupon> coupons = new ArrayList<>();
 
 

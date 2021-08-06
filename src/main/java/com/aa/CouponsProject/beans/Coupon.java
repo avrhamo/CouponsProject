@@ -1,8 +1,6 @@
 package com.aa.CouponsProject.beans;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -12,13 +10,17 @@ import java.sql.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Coupon {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    private String title;
+    private String description;
     @Enumerated(EnumType.ORDINAL)
     private Categories categoryId;
     @ManyToOne
+    @ToString.Exclude
     private Company company;
     private Date startDate;
     private Date endDate;

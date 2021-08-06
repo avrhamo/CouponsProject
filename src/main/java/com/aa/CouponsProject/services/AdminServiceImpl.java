@@ -4,33 +4,36 @@ import com.aa.CouponsProject.beans.Company;
 import com.aa.CouponsProject.beans.Customer;
 import com.aa.CouponsProject.exceptions.CouponSystemCustomExceptions;
 import com.aa.CouponsProject.exceptions.ErrMsg;
-import com.aa.CouponsProject.repos.CompanyRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AdminServiceImpl extends ClientService implements AdminService{
 
-
     @Override
     public void addCompany(Company company) throws CouponSystemCustomExceptions {
 
-        if (companyRepository.existsByName(company.getName())){
-            throw new CouponSystemCustomExceptions(ErrMsg.COMPANY_NAME_EXIST);
+        if (companyRepository.existsByEmail(company.getEmail())){
+            throw new CouponSystemCustomExceptions(ErrMsg.COMPANY_EMAIL_EXIST);
         }
 
         if (companyRepository.existsByName(company.getName())){
             throw new CouponSystemCustomExceptions(ErrMsg.COMPANY_NAME_EXIST);
         }
 
-        this.addCompany(company);
-
+        companyRepository.save(company);
     }
 
     @Override
-    public void updateCompany(int companyId, Company company) {
+    public void updateCompany(int companyId, Company company) throws CouponSystemCustomExceptions {
 
+        Optional<Company> companyFromDB = companyRepository.findById(companyId);
+        if(companyFromDB.get().getEmail() == company.getEmail() && companyFromDB.get().getName() == company.getName()){
+            throw new CouponSystemCustomExceptions(ErrMsg.COMPANY_CANT_UPDATE_COMPANY_ID);
+        }
+        companyRepository.saveAndFlush(company);
     }
 
     @Override
