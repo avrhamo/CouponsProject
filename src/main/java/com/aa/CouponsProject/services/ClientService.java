@@ -8,8 +8,8 @@ import com.aa.CouponsProject.repos.CustomerRepository;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-
 
 public abstract class ClientService {
 

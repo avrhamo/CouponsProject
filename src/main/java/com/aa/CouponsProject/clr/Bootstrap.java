@@ -4,10 +4,12 @@ import com.aa.CouponsProject.beans.Categories;
 import com.aa.CouponsProject.beans.Company;
 import com.aa.CouponsProject.beans.Coupon;
 import com.aa.CouponsProject.beans.Customer;
+import com.aa.CouponsProject.exceptions.CouponSystemCustomExceptions;
 import com.aa.CouponsProject.job.DailyRemoval;
 import com.aa.CouponsProject.repos.CompanyRepository;
 import com.aa.CouponsProject.repos.CouponRepository;
 import com.aa.CouponsProject.repos.CustomerRepository;
+import com.aa.CouponsProject.services.AdminServiceImpl;
 import com.aa.CouponsProject.test.TestAdminService;
 import com.aa.CouponsProject.utils.ArtUtils;
 import lombok.RequiredArgsConstructor;
@@ -24,9 +26,10 @@ import java.util.Arrays;
 
 @Component
 @RequiredArgsConstructor
-@Order
 public class Bootstrap implements CommandLineRunner {
 
+    @Autowired
+    private final AdminServiceImpl adminServiceImpl;
     @Autowired
     private final CouponRepository couponRepository;
     @Autowired
@@ -135,6 +138,6 @@ public class Bootstrap implements CommandLineRunner {
         System.out.println(ArtUtils.GET_ALL);
         couponRepository.findAll().forEach(System.out::println);
 
-        TestAdminService.runTest();
+        TestAdminService.runAdminServiceImpl(adminServiceImpl);
     }
 }
