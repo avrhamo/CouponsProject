@@ -22,28 +22,29 @@ public class AdminServiceImpl extends ClientService implements AdminService {
         if (companyRepository.existsByName(company.getName())) {
             throw new CouponSystemCustomExceptions(ErrMsg.COMPANY_NAME_EXIST);
         }
-
         companyRepository.saveAndFlush(company);
-
     }
 
     @Override
-    public void updateCompany(int companyId, Company company) throws CouponSystemCustomExceptions {
+    public void updateCompany(int companyId, Company company) {
 
         Company companyFromDB;
+        try {
+            if (companyRepository.existsById(companyId)) {
+                companyFromDB = companyRepository.getById(companyId);
+            } else {
+                throw new CouponSystemCustomExceptions(ErrMsg.COMPANY_DO_NOT_EXIST);
+            }
 
-        if (companyRepository.existsById(companyId)) {
-            companyFromDB = companyRepository.getById(companyId);
-        } else {
-            throw new CouponSystemCustomExceptions(ErrMsg.COMPANY_DO_NOT_EXIST);
-        }
-
-        if (companyId == companyFromDB.getId()) {
-            throw new CouponSystemCustomExceptions(ErrMsg.CANT_UPDATE_COMPANY_ID);
-        } else if (company.getName() == companyFromDB.getName()) {
-            throw new CouponSystemCustomExceptions(ErrMsg.CANT_UPDATE_COMPANY_NAME);
-        } else {
-            companyRepository.saveAndFlush(company);
+            if (companyId != companyFromDB.getId()) {
+                throw new CouponSystemCustomExceptions(ErrMsg.CANT_UPDATE_COMPANY_ID);
+            } else if (!company.getName().equals(companyFromDB.getName())) {
+                throw new CouponSystemCustomExceptions(ErrMsg.CANT_UPDATE_COMPANY_NAME);
+            } else {
+                companyRepository.saveAndFlush(company);
+            }
+        } catch (CouponSystemCustomExceptions e) {
+            System.out.println(e.getMessage());
         }
     }
 
@@ -83,7 +84,7 @@ public class AdminServiceImpl extends ClientService implements AdminService {
             throw new CouponSystemCustomExceptions(ErrMsg.CUSTOMER_DO_NOT_EXIST);
         }
 
-        if (customerId == customerFromDB.getId()) {
+        if (customerId != customerFromDB.getId()) {
             throw new CouponSystemCustomExceptions(ErrMsg.CANT_UPDATE_CUSTOMER_ID);
         } else {
             customerRepository.saveAndFlush(customer);

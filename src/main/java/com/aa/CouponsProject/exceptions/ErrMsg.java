@@ -4,7 +4,7 @@ public enum ErrMsg {
 
     COMPANY_EMAIL_EXIST("Company email is already exist"),
     COMPANY_NAME_EXIST("Company name is already exist"),
-    COMPANY_DO_NOT_EXIST("Company is not exist in DB"),
+    COMPANY_DO_NOT_EXIST("Company id is not exist in DB"),
     CANT_UPDATE_COMPANY_ID("Can't update company id"),
     CANT_UPDATE_COMPANY_NAME("Can't update company name"),
 
