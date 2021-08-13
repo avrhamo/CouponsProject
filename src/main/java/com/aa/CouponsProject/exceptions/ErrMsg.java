@@ -10,7 +10,10 @@ public enum ErrMsg {
 
     CUSTOMER_EMAIL_EXIST("Customer email is already exist"),
     CUSTOMER_DO_NOT_EXIST("Customer is not exist in DB"),
-    CANT_UPDATE_CUSTOMER_ID("Can't update customer id")
+    CANT_UPDATE_CUSTOMER_ID("Can't update customer id"),
+
+    COUPON_EXPIRED_ERROR("You can't buy this coupon, coupon expired"),
+    COUPON_SOLD_OUT("You can't buy this coupon, coupon sold out")
 
     ;
 
