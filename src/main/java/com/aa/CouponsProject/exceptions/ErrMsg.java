@@ -13,7 +13,8 @@ public enum ErrMsg {
     CANT_UPDATE_CUSTOMER_ID("Can't update customer id"),
 
     COUPON_EXPIRED_ERROR("You can't buy this coupon, coupon expired"),
-    COUPON_SOLD_OUT("You can't buy this coupon, coupon sold out")
+    COUPON_SOLD_OUT("You can't buy this coupon, coupon sold out"),
+    CANT_BUY_A_COUPON_MORE_THEN_ONCE("You can't buy a coupon more then once")
 
     ;
 

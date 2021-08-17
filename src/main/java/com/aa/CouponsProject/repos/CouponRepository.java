@@ -11,4 +11,5 @@ import java.time.LocalDate;
 public interface CouponRepository extends JpaRepository<Coupon, Integer> {
 
 
+
 }

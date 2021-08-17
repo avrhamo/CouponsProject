@@ -1,4 +1,4 @@
-package com.aa.CouponsProject.clr;
+package com.aa.CouponsProject.clr.test;
 
 
 import com.aa.CouponsProject.beans.Company;

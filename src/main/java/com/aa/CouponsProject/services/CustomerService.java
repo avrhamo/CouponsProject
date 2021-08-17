@@ -16,7 +16,7 @@ public interface CustomerService {
 
     List<Coupon> getCouponsByCategory(int CustomerId, Categories category) throws CouponSystemCustomExceptions;
 
-    List<Coupon> getAllCouponsUpToMaxPrice(int CustomerId, Categories category) throws CouponSystemCustomExceptions;
+    List<Coupon> getAllCouponsUpToMaxPrice(int couponMaxPrice) throws CouponSystemCustomExceptions;
 
     Customer getCustomerDetails(int CustomerId);
 

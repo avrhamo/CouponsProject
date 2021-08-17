@@ -48,6 +48,13 @@ public class CustomerServiceImpl extends ClientService implements CustomerServic
 
         List<Coupon> customerCoupons = customer.getCoupons();
 
+        if (customerCoupons.stream().filter(coupon1 -> coupon1.getId() == couponToBuy.getId()).count() > 0) {
+            throw new CouponSystemCustomExceptions(ErrMsg.CANT_BUY_A_COUPON_MORE_THEN_ONCE);
+        }
+
+        couponToBuy.setAmount(couponToBuy.getAmount() - 1);
+        couponRepository.saveAndFlush(couponToBuy);
+
         customerCoupons.add(coupon);
         customer.setCoupons(null);
         customerRepository.saveAndFlush(customer);
@@ -65,26 +72,27 @@ public class CustomerServiceImpl extends ClientService implements CustomerServic
     @Override
     public List<Coupon> getCouponsByCategory(int customerId, Categories category) throws CouponSystemCustomExceptions {
 
-//        List<Coupon> customerCoupons = this.getAllCoupons(customerId);
-//        if (customerCoupons == null) {
-//            return null;
-//        }
-//        return customerCoupons.stream().filter(c -> c.getCategoryId().equals(category.ordinal())).collect(Collectors.toList());
-//
-//        customer.setCoupons(this.getAllCoupons(customerId));
         if (customer.getCoupons() == null) {
             return null;
         }
-        return customer.getCoupons().stream().filter(c -> c.getCategoryId().equals(category)).collect(Collectors.toList());
+        return customer
+                .getCoupons()
+                .stream()
+                .filter(c -> c.getCategoryId().equals(category))
+                .collect(Collectors.toList());
     }
 
     @Override
-    public List<Coupon> getAllCouponsUpToMaxPrice(int CustomerId, Categories category) throws CouponSystemCustomExceptions {
-        return null;
+    public List<Coupon> getAllCouponsUpToMaxPrice(int couponMaxPrice) {
+        return customer
+                .getCoupons()
+                .stream()
+                .filter(coupon -> coupon.getPrice() <= couponMaxPrice)
+                .collect(Collectors.toList());
     }
 
     @Override
     public Customer getCustomerDetails(int CustomerId) {
-        return null;
+        return customer;
     }
 }

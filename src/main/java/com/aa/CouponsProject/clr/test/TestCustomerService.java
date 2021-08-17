@@ -1,4 +1,4 @@
-package com.aa.CouponsProject.clr;
+package com.aa.CouponsProject.clr.test;
 
 
 import com.aa.CouponsProject.beans.Categories;
@@ -24,7 +24,6 @@ public class TestCustomerService implements CommandLineRunner {
 
     private final CustomerService customerService;
     private final CouponRepository couponRepository;
-    private final CompanyService companyService;
 
     @Override
     public void run(String... args) throws Exception {
@@ -60,10 +59,17 @@ public class TestCustomerService implements CommandLineRunner {
         System.out.println("After buying coupon : ");
         customerService.getAllCoupons(1).forEach(System.out::println);
 
+        System.out.println("\n\nError Testing - Buying coupon_id = 5 for customer_id = 1 AGAIN!");
+        customerService.AddCouponPurchase(couponRepository.getById(5));
 
         System.out.println("\n\nGet all customer coupons by category - VACATION");
         customerService.getCouponsByCategory(1,Categories.VACATION).forEach(System.out::println);
 
+        System.out.println("\n\nGet all coupons under 50$");
+        customerService.getAllCouponsUpToMaxPrice(50).forEach(System.out::println);
+
+        System.out.println("\n\nGet customer details");
+        System.out.println(customerService.getCustomerDetails(1).toString());
 
     }
 }
