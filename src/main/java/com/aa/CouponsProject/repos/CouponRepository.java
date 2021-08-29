@@ -26,8 +26,8 @@ public interface CouponRepository extends JpaRepository<Coupon, Integer> {
 
     Company getByCompanyId(int id);
 
-    @Query(value = "SELECT * `coupon-sys`.coupons WHERE company_id = :companyId", nativeQuery = true)
-    List<Coupon> getCompanyCoupons(int companyId);
+//    @Query(value = "SELECT * `coupon-sys`.coupons WHERE company_id = :companyId", nativeQuery = true)
+//    List<Coupon> getCompanyCoupons(int companyId);
 
     List<Coupon> getAllByCompanyId(int companyId);
 
