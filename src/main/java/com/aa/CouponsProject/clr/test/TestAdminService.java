@@ -47,18 +47,28 @@ public class TestAdminService implements CommandLineRunner {
         company1 = adminService.getSingleCompany(4);
         System.out.println("\n\nTrying to update a company with an id that do not exist: ");
         System.out.println("adminServiceImpl.updateCompany(7,company1);");
-        adminService.updateCompany(7,company1);
-
-
+        try {
+            adminService.updateCompany(7,company1);
+        }catch (CouponSystemCustomExceptions e ) {
+            System.out.println(e.getMessage());
+        }
         System.out.println("\n\nTrying to update company Id: ");
         System.out.println("adminServiceImpl.updateCompany(2,company1);");
-        adminService.updateCompany(2,company1);
+        try {
+            adminService.updateCompany(2,company1);
+        }catch (CouponSystemCustomExceptions e ) {
+            System.out.println(e.getMessage());
+        }
 
         System.out.println("\n\nTrying to update company name: ");
         company1.setName("bla-bla");
         System.out.println("company1.setName(\"bla-bla\")");
         System.out.println("adminServiceImpl.updateCompany(4,company1);");
-        adminService.updateCompany(4,company1);
+        try {
+            adminService.updateCompany(4,company1);
+        }catch (CouponSystemCustomExceptions e ) {
+            System.out.println(e.getMessage());
+        }
 
         System.out.println("\n\nTrying to update company password: ");
         System.out.println("company from DB before changes:");

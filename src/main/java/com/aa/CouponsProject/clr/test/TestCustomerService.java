@@ -3,6 +3,7 @@ package com.aa.CouponsProject.clr.test;
 
 import com.aa.CouponsProject.beans.Categories;
 import com.aa.CouponsProject.beans.Coupon;
+import com.aa.CouponsProject.exceptions.CouponSystemCustomExceptions;
 import com.aa.CouponsProject.repos.CouponRepository;
 import com.aa.CouponsProject.services.CompanyService;
 import com.aa.CouponsProject.services.CompanyServiceImpl;
@@ -60,7 +61,12 @@ public class TestCustomerService implements CommandLineRunner {
         customerService.getAllCoupons(1).forEach(System.out::println);
 
         System.out.println("\n\nError Testing - Buying coupon_id = 5 for customer_id = 1 AGAIN!");
-        customerService.AddCouponPurchase(couponRepository.getById(5));
+
+        try {
+            customerService.AddCouponPurchase(couponRepository.getById(5));
+        }catch (CouponSystemCustomExceptions e ) {
+            System.out.println(e.getMessage());
+        }
 
         System.out.println("\n\nGet all customer coupons by category - VACATION");
         customerService.getCouponsByCategory(1,Categories.VACATION).forEach(System.out::println);
