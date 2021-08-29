@@ -19,24 +19,23 @@ public class CompanyServiceImpl extends ClientService implements CompanyService{
     @Override
     public boolean login(String email, String password) {
         boolean correctLoginDetails = companyRepository.existsByEmailAndPassword(email, password);
-        if (correctLoginDetails) {
+        if (correctLoginDetails)
             company = companyRepository.findByEmailAndPassword(email, password);
-        }
+
         return correctLoginDetails;
     }
 
     @Override
     public void addCoupon(Coupon coupon) throws CouponSystemCustomExceptions {
 
-        if(couponRepository.existsByCompanyIdAndTitle(company.getId(), coupon.getTitle())) {
+        if(couponRepository.existsByCompanyIdAndTitle(company.getId(), coupon.getTitle()))
             throw new CouponSystemCustomExceptions(ErrMsg.COMPANY_ALREADY_OWN_A_COUPON_WITH_SAME_TITLE);
-        }
 
-        List<Coupon> companyCoupons = company.getCoupons();
-        companyCoupons.add(coupon);
-        company.setCoupons(companyCoupons);
+        coupon.setCompany(company);
+        couponRepository.saveAndFlush(coupon);
+
+        company.getCoupons().add(coupon);
         companyRepository.saveAndFlush(company);
-
     }
 
     @Override
@@ -49,7 +48,6 @@ public class CompanyServiceImpl extends ClientService implements CompanyService{
             throw new CouponSystemCustomExceptions(ErrMsg.UPDATING_COUPON_ID_OR_COMPANY_ID_DISALLOWED);
 
         couponRepository.saveAndFlush(coupon);
-
     }
 
     @Override
@@ -59,12 +57,12 @@ public class CompanyServiceImpl extends ClientService implements CompanyService{
 
     @Override
     public List<Coupon> getCompanyCoupons() {
-        return couponRepository.getCompanyCoupons(company.getId());
+        return couponRepository.getAllByCompanyId(company.getId());
     }
 
     @Override
     public List<Coupon> getCompanyCoupons(Categories category) {
-        return null;
+        return couponRepository.getAllByCompanyIdAndCategoryId(company.getId(), category);
     }
 
     @Override
@@ -74,6 +72,6 @@ public class CompanyServiceImpl extends ClientService implements CompanyService{
 
     @Override
     public Company getCompanyDetails() {
-        return null;
+        return companyRepository.getById(company.getId());
     }
 }

@@ -9,6 +9,7 @@ import com.aa.CouponsProject.services.CompanyService;
 import com.aa.CouponsProject.services.CompanyServiceImpl;
 import com.aa.CouponsProject.services.CustomerService;
 import com.aa.CouponsProject.services.CustomerServiceImpl;
+import com.aa.CouponsProject.utils.ArtUtils;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
@@ -28,8 +29,8 @@ public class TestCustomerService implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-
-        System.out.println("\n\n");
+        if(3>0)return;
+        System.out.println(ArtUtils.TEST_CUSTOMER_SERVICE);
 
         System.out.println("Trying to login as customer with wrong email - > ((CustomerServiceImpl) customerService).login(\"bla-bla\", \"admin\") - answer:");
         System.out.println(((CustomerServiceImpl) customerService).login("bla-bla", "admin") + "\n\n");

@@ -7,6 +7,7 @@ import com.aa.CouponsProject.exceptions.CouponSystemCustomExceptions;
 import com.aa.CouponsProject.services.AdminService;
 import com.aa.CouponsProject.services.AdminServiceImpl;
 import com.aa.CouponsProject.services.ClientService;
+import com.aa.CouponsProject.utils.ArtUtils;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +24,8 @@ public class TestAdminService implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        if( 3 < 0){
-            return;
-        }
-        System.out.println("\n\n");
+        if(3>0)return;
+        System.out.println(ArtUtils.TEST_ADMIN_SERVICE);
 
         System.out.println("Trying to login as admin with wrong email - > TestAdminService.login(\"bla-bla\", \"admin\") - answer:");
         System.out.println(((AdminServiceImpl) adminService).login("bla-bla", "admin") + "\n\n");
