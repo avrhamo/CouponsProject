@@ -117,6 +117,15 @@ public class TestAdminService implements CommandLineRunner {
         System.out.println("Get all customers from DB after delete ");
         adminService.getAllCustomers().forEach(System.out::println);
 
+        System.out.println("\n\nDelete customer 1 from DB + Deleting all of his coupons");
+        System.out.println("Get all customers from DB before delete ");
+        adminService.getAllCustomers().forEach(System.out::println);
+        adminService.deleteCustomer(1);
+        System.out.println("Get all customers from DB after delete ");
+        adminService.getAllCustomers().forEach(System.out::println);
+
+        System.out.println("Delete Company 2 from DB + Company coupons");
+        adminService.deleteCompany(2);
 
     }
 }
