@@ -1,14 +1,13 @@
 package com.aa.CouponsProject.services;
 
 import com.aa.CouponsProject.beans.Company;
+import com.aa.CouponsProject.beans.Coupon;
 import com.aa.CouponsProject.beans.Customer;
 import com.aa.CouponsProject.exceptions.CouponSystemCustomExceptions;
 import com.aa.CouponsProject.exceptions.ErrMsg;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
-import java.util.Optional;
-//*****************
+
 @Service
 public class AdminServiceImpl extends ClientService implements AdminService {
 
@@ -48,10 +47,22 @@ public class AdminServiceImpl extends ClientService implements AdminService {
         }
     }
 
-    //TODO: delete all company coupons
     @Override
     public void deleteCompany(int companyId) {
+
+        //get all company coupons
+        List<Coupon> companyCoupons = couponRepository.getCompanyCoupons(companyId);
+
+        //Delete all coupons from customers
+        companyCoupons.stream()
+                .forEach(c-> couponRepository.deleteCouponFromCustomers(c.getId()));
+
+        //Delete Coupons from coupon table
+        couponRepository.deleteCouponByCompanyId1(companyId);
+
+        //Delete Company
         companyRepository.deleteById(companyId);
+
     }
 
     @Override

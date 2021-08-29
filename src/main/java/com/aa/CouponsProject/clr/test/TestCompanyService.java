@@ -15,7 +15,7 @@ import java.sql.Date;
 import java.time.LocalDate;
 
 @Component
-@Order(3)
+@Order(1)
 @RequiredArgsConstructor
 public class TestCompanyService implements CommandLineRunner {
 

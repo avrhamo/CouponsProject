@@ -15,7 +15,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 @Component
-@Order(2)
+@Order(3)
 @RequiredArgsConstructor
 public class TestAdminService implements CommandLineRunner {
 
@@ -23,7 +23,9 @@ public class TestAdminService implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-
+        if( 3 < 0){
+            return;
+        }
         System.out.println("\n\n");
 
         System.out.println("Trying to login as admin with wrong email - > TestAdminService.login(\"bla-bla\", \"admin\") - answer:");
@@ -124,8 +126,8 @@ public class TestAdminService implements CommandLineRunner {
         System.out.println("Get all customers from DB after delete ");
         adminService.getAllCustomers().forEach(System.out::println);
 
-        System.out.println("Delete Company 2 from DB + Company coupons");
-        adminService.deleteCompany(2);
+        System.out.println("Delete Company 1 from DB + Company coupons");
+        adminService.deleteCompany(1);
 
     }
 }
