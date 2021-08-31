@@ -18,7 +18,7 @@ import java.sql.Date;
 import java.time.LocalDate;
 
 @Component
-@Order(1)
+@Order(2)
 @RequiredArgsConstructor
 public class TestCompanyService implements CommandLineRunner {
 
@@ -27,7 +27,7 @@ public class TestCompanyService implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-
+        if(1>0)return;
         System.out.println(ArtUtils.TEST_COMPANY_SERVICE);
 
         Company company1 = Company.builder()
@@ -73,29 +73,43 @@ public class TestCompanyService implements CommandLineRunner {
 
         c1.setId(7);
         c1.setTitle("coupon1");
+        c1.setPrice(25);
 
         c2.setId(8);
         c2.setTitle("coupon2");
+        c2.setPrice(40);
 
         c3.setId(9);
         c3.setTitle("coupon3");
+        c3.setPrice(29.99);
 
 
         try{
             companyService.addCoupon(c1);
             companyService.addCoupon(c2);
             companyService.addCoupon(c3);
-        }
-        catch(CouponSystemCustomExceptions e) {
+        }catch(CouponSystemCustomExceptions e) {
             System.out.println(e.getMessage());
         }
-//        companyService.getCompanyCoupons(Categories.FOOD).forEach(System.out::println);
+        companyService.getCompanyCoupons(Categories.FOOD).forEach(System.out::println);
         companyService.getCompanyCoupons(Categories.VACATION).forEach(System.out::println);
 
-//        companyService.getCompanyCoupons().forEach(System.out::println);
-//        companyService.addCoupon(coupon1);
+        companyService.getCompanyCoupons().forEach(System.out::println);
+        try{
+            companyService.addCoupon(coupon1);
+        }catch (CouponSystemCustomExceptions e) {
+            System.out.println(e.getMessage());
+        }
 
+        System.out.println("\nget all company coupons: ");
+        companyService.getCompanyCoupons().forEach(System.out::println);
+        System.out.println("\ndelete coupon 1 ");
+        companyService.deleteCoupon(couponRepository.getById(1));
+        System.out.println("\nget all company coupons: ");
+        companyService.getCompanyCoupons().forEach(System.out::println);
 
+        System.out.println("\n\nGet all company coupons up 30$");
+        companyService.getCompanyCoupons(30).forEach(System.out::println);
 
     }
 }

@@ -46,4 +46,6 @@ public interface CouponRepository extends JpaRepository<Coupon, Integer> {
 
     @Query(value = "SELECT * `coupon-sys`.coupons WHERE customer_id = :customerId", nativeQuery = true)
     List<Coupon> getCustomerCoupons(@Param("customerId") int customerId);
+
+
 }

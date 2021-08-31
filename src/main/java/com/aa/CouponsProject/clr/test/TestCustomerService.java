@@ -20,7 +20,7 @@ import java.sql.Date;
 import java.time.LocalDate;
 
 @Component
-@Order(2)
+@Order(1)
 @RequiredArgsConstructor
 public class TestCustomerService implements CommandLineRunner {
 
@@ -29,7 +29,7 @@ public class TestCustomerService implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        if(3>0)return;
+//        if(3>0)return;
         System.out.println(ArtUtils.TEST_CUSTOMER_SERVICE);
 
         System.out.println("Trying to login as customer with wrong email - > ((CustomerServiceImpl) customerService).login(\"bla-bla\", \"admin\") - answer:");

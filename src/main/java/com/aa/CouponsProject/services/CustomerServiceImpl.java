@@ -38,30 +38,25 @@ public class CustomerServiceImpl extends ClientService implements CustomerServic
     public void AddCouponPurchase(Coupon coupon) throws CouponSystemCustomExceptions {
 
         Coupon couponToBuy = couponRepository.getById(coupon.getId());
-
-        if (couponToBuy.getEndDate().before(Date.valueOf(LocalDate.now()))) {
-            throw new CouponSystemCustomExceptions(ErrMsg.COUPON_EXPIRED_ERROR);
-        }
-        if (couponToBuy.getAmount() == 0) {
-            throw new CouponSystemCustomExceptions(ErrMsg.COUPON_SOLD_OUT);
-        }
-
         List<Coupon> customerCoupons = customer.getCoupons();
 
-        if (customerCoupons.stream().filter(coupon1 -> coupon1.getId() == couponToBuy.getId()).count() > 0) {
+        if (customerCoupons.stream().filter(coupon1 -> coupon1.getId() == couponToBuy.getId()).count() > 0)
             throw new CouponSystemCustomExceptions(ErrMsg.CANT_BUY_A_COUPON_MORE_THEN_ONCE);
-        }
+
+        if (couponToBuy.getAmount() == 0)
+            throw new CouponSystemCustomExceptions(ErrMsg.COUPON_SOLD_OUT);
+
+        if (couponToBuy.getEndDate().before(Date.valueOf(LocalDate.now())))
+            throw new CouponSystemCustomExceptions(ErrMsg.COUPON_EXPIRED_ERROR);
 
         couponToBuy.setAmount(couponToBuy.getAmount() - 1);
         couponRepository.saveAndFlush(couponToBuy);
 
-        customerCoupons.add(couponToBuy);
         customer.setCoupons(null);
         customerRepository.saveAndFlush(customer);
-
+        customerCoupons.add(couponToBuy);
         customer.setCoupons(customerCoupons);
         customerRepository.saveAndFlush(customer);
-
     }
 
     @Override

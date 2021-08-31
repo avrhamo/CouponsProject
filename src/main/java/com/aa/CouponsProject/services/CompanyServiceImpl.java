@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -52,6 +53,7 @@ public class CompanyServiceImpl extends ClientService implements CompanyService{
 
     @Override
     public void deleteCoupon(Coupon coupon) {
+        couponRepository.deleteCouponFromCustomers(coupon.getId());
         couponRepository.deleteById(coupon.getId());
     }
 
@@ -67,7 +69,12 @@ public class CompanyServiceImpl extends ClientService implements CompanyService{
 
     @Override
     public List<Coupon> getCompanyCoupons(double maxPrice) {
-        return null;
+
+        return company
+                .getCoupons()
+                .stream()
+                .filter(coupon -> coupon.getPrice() <= maxPrice)
+                .collect(Collectors.toList());
     }
 
     @Override
