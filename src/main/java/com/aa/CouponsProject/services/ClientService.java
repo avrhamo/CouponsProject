@@ -2,6 +2,7 @@ package com.aa.CouponsProject.services;
 
 import com.aa.CouponsProject.CouponsProjectApplication;
 import com.aa.CouponsProject.beans.Company;
+import com.aa.CouponsProject.exceptions.CouponSystemCustomExceptions;
 import com.aa.CouponsProject.repos.CompanyRepository;
 import com.aa.CouponsProject.repos.CouponRepository;
 import com.aa.CouponsProject.repos.CustomerRepository;
@@ -25,5 +26,5 @@ public abstract class ClientService {
     public ClientService() {
     }
 
-    public abstract boolean login(String email, String password);
+    public abstract boolean login(String email, String password) throws CouponSystemCustomExceptions;
 }

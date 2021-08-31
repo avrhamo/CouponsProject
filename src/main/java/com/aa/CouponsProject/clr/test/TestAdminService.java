@@ -1,16 +1,13 @@
 package com.aa.CouponsProject.clr.test;
 
-
 import com.aa.CouponsProject.beans.Company;
 import com.aa.CouponsProject.beans.Customer;
+import com.aa.CouponsProject.clients.ClientType;
+import com.aa.CouponsProject.clients.LoginManager;
 import com.aa.CouponsProject.exceptions.CouponSystemCustomExceptions;
 import com.aa.CouponsProject.services.AdminService;
-import com.aa.CouponsProject.services.AdminServiceImpl;
-import com.aa.CouponsProject.services.ClientService;
 import com.aa.CouponsProject.utils.ArtUtils;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -20,18 +17,26 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class TestAdminService implements CommandLineRunner {
 
-    private final AdminService adminService;
+    private AdminService adminService;
+    private final LoginManager loginManager;
 
     @Override
     public void run(String... args) throws Exception {
-        if(3>0)return;
+
         System.out.println(ArtUtils.TEST_ADMIN_SERVICE);
 
-        System.out.println("Trying to login as admin with wrong email - > TestAdminService.login(\"bla-bla\", \"admin\") - answer:");
-        System.out.println(((AdminServiceImpl) adminService).login("bla-bla", "admin") + "\n\n");
+        try {
+            System.out.println("Trying to login as admin with wrong email - > TestAdminService.login(\"bla-bla\", \"admin\")");
+            //System.out.println(((AdminServiceImpl) adminService).login("bla-bla", "admin") + "\n\n");
+            adminService = (AdminService) loginManager.login("bla-bla", "admin", ClientType.ADMIN);
+
+        } catch (CouponSystemCustomExceptions e) {
+            System.out.println(e.getMessage());
+        }
 
         System.out.println("Trying to login as admin with correct email - > TestAdminService.login(\"admin@admin.com\", \"admin\") - answer:");
-        System.out.println(((AdminServiceImpl) adminService).login("admin@admin.com", "admin") + "\n\n");
+        //System.out.println(((AdminServiceImpl) adminService).login("admin@admin.com", "admin") + "\n\n");
+        adminService = (AdminService) loginManager.login("admin@admin.com", "admin", ClientType.ADMIN);
 
         System.out.println("creating company and adding to DB");
 
@@ -49,15 +54,15 @@ public class TestAdminService implements CommandLineRunner {
         System.out.println("\n\nTrying to update a company with an id that do not exist: ");
         System.out.println("adminServiceImpl.updateCompany(7,company1);");
         try {
-            adminService.updateCompany(7,company1);
-        }catch (CouponSystemCustomExceptions e ) {
+            adminService.updateCompany(7, company1);
+        } catch (CouponSystemCustomExceptions e) {
             System.out.println(e.getMessage());
         }
         System.out.println("\n\nTrying to update company Id: ");
         System.out.println("adminServiceImpl.updateCompany(2,company1);");
         try {
-            adminService.updateCompany(2,company1);
-        }catch (CouponSystemCustomExceptions e ) {
+            adminService.updateCompany(2, company1);
+        } catch (CouponSystemCustomExceptions e) {
             System.out.println(e.getMessage());
         }
 
@@ -66,8 +71,8 @@ public class TestAdminService implements CommandLineRunner {
         System.out.println("company1.setName(\"bla-bla\")");
         System.out.println("adminServiceImpl.updateCompany(4,company1);");
         try {
-            adminService.updateCompany(4,company1);
-        }catch (CouponSystemCustomExceptions e ) {
+            adminService.updateCompany(4, company1);
+        } catch (CouponSystemCustomExceptions e) {
             System.out.println(e.getMessage());
         }
 
@@ -77,7 +82,7 @@ public class TestAdminService implements CommandLineRunner {
         System.out.println(company1);
         System.out.println("company1.setPassword(\"112233\");");
         company1.setPassword("112233");
-        adminService.updateCompany(company1.getId(),company1);
+        adminService.updateCompany(company1.getId(), company1);
         System.out.println("company from DB after changes");
         System.out.println(adminService.getSingleCompany(company1.getId()).toString());
 

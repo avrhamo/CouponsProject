@@ -26,10 +26,9 @@ public interface CouponRepository extends JpaRepository<Coupon, Integer> {
 
     Company getByCompanyId(int id);
 
-//    @Query(value = "SELECT * `coupon-sys`.coupons WHERE company_id = :companyId", nativeQuery = true)
-//    List<Coupon> getCompanyCoupons(int companyId);
-
     List<Coupon> getAllByCompanyId(int companyId);
+
+    List<Coupon> findByEndDateBefore(Date endDate);
 
     List<Coupon> getAllByCompanyIdAndCategoryId(int companyId, Categories category);
 
@@ -48,4 +47,8 @@ public interface CouponRepository extends JpaRepository<Coupon, Integer> {
     List<Coupon> getCustomerCoupons(@Param("customerId") int customerId);
 
 
+    @Transactional
+    @Modifying
+    @Query(value = "INSERT INTO `coupon-sys`.customers_coupons VALUES (:customerId, :couponId);", nativeQuery = true)
+    void insertNewCouponToCustomer(@Param("customerId") int customerId, @Param("couponId") int couponId);
 }

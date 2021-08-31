@@ -97,7 +97,7 @@ public class Bootstrap implements CommandLineRunner {
                 .image("http://image.com")
                 .startDate(Date.valueOf(LocalDate.now()))
                 .endDate(Date.valueOf(LocalDate.now().plusDays(30)))
-//                .endDate(Date.valueOf(LocalDate.now().minusDays(25)))
+                //.endDate(Date.valueOf(LocalDate.now().minusDays(25)))
                 .build();
 
         Coupon coupon2 = Coupon.builder()

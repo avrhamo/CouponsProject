@@ -2,6 +2,8 @@ package com.aa.CouponsProject.exceptions;
 
 public enum ErrMsg {
 
+    WRONG_LOGIN_DETAILS("Wrong login details"),
+
     COMPANY_EMAIL_EXIST("Company email is already exist"),
     COMPANY_NAME_EXIST("Company name is already exist"),
     COMPANY_DO_NOT_EXIST("Company id is not exist in DB"),
@@ -17,7 +19,7 @@ public enum ErrMsg {
     CANT_BUY_A_COUPON_MORE_THEN_ONCE("You can't buy a coupon more then once"),
 
     COMPANY_ALREADY_OWN_A_COUPON_WITH_SAME_TITLE("This company already own a coupon with the same title"),
-    UPDATING_COUPON_ID_OR_COMPANY_ID_DISALLOWED("Can't update coupon company id or coupon id")
+    UPDATING_COUPON_IS_OR_COMPANY_IS_DISALLOWED("Can't update coupon company id or coupon id")
 
     ;
 

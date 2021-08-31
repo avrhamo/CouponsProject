@@ -1,20 +1,15 @@
 package com.aa.CouponsProject.services;
 
 import com.aa.CouponsProject.beans.Categories;
-import com.aa.CouponsProject.beans.Company;
 import com.aa.CouponsProject.beans.Coupon;
 import com.aa.CouponsProject.beans.Customer;
 import com.aa.CouponsProject.exceptions.CouponSystemCustomExceptions;
 import com.aa.CouponsProject.exceptions.ErrMsg;
 import com.aa.CouponsProject.repos.CouponRepository;
-import com.aa.CouponsProject.repos.CustomerRepository;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.sql.Date;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,37 +21,39 @@ public class CustomerServiceImpl extends ClientService implements CustomerServic
     private final CouponRepository couponRepository;
 
     @Override
-    public boolean login(String email, String password) {
-        boolean correctLoginDetails = customerRepository.existsByEmailAndPassword(email, password);
-        if (correctLoginDetails) {
+    public boolean login(String email, String password) throws CouponSystemCustomExceptions {
+
+        if (customerRepository.existsByEmailAndPassword(email, password))
             customer = customerRepository.findByEmailAndPassword(email, password);
-        }
-        return correctLoginDetails;
+        else
+            throw new CouponSystemCustomExceptions(ErrMsg.WRONG_LOGIN_DETAILS);
+
+        return true;
     }
 
     @Override
     public void AddCouponPurchase(Coupon coupon) throws CouponSystemCustomExceptions {
 
         Coupon couponToBuy = couponRepository.getById(coupon.getId());
+
+        if (couponToBuy.getEndDate().before(Date.valueOf(LocalDate.now()))) {
+            throw new CouponSystemCustomExceptions(ErrMsg.COUPON_EXPIRED_ERROR);
+        }
+        if (couponToBuy.getAmount() == 0) {
+            throw new CouponSystemCustomExceptions(ErrMsg.COUPON_SOLD_OUT);
+        }
+
         List<Coupon> customerCoupons = customer.getCoupons();
 
-        if (customerCoupons.stream().filter(coupon1 -> coupon1.getId() == couponToBuy.getId()).count() > 0)
+        if (customerCoupons.stream().filter(coupon1 -> coupon1.getId() == couponToBuy.getId()).count() > 0) {
             throw new CouponSystemCustomExceptions(ErrMsg.CANT_BUY_A_COUPON_MORE_THEN_ONCE);
-
-        if (couponToBuy.getAmount() == 0)
-            throw new CouponSystemCustomExceptions(ErrMsg.COUPON_SOLD_OUT);
-
-        if (couponToBuy.getEndDate().before(Date.valueOf(LocalDate.now())))
-            throw new CouponSystemCustomExceptions(ErrMsg.COUPON_EXPIRED_ERROR);
+        }
 
         couponToBuy.setAmount(couponToBuy.getAmount() - 1);
         couponRepository.saveAndFlush(couponToBuy);
 
-        customer.setCoupons(null);
-        customerRepository.saveAndFlush(customer);
-        customerCoupons.add(couponToBuy);
-        customer.setCoupons(customerCoupons);
-        customerRepository.saveAndFlush(customer);
+        customer.getCoupons().add(couponToBuy);
+        couponRepository.insertNewCouponToCustomer(customer.getId(), couponToBuy.getId());
     }
 
     @Override
@@ -82,7 +79,7 @@ public class CustomerServiceImpl extends ClientService implements CustomerServic
         return customer
                 .getCoupons()
                 .stream()
-                .filter(coupon -> coupon.getPrice() <= couponMaxPrice)
+                .filter(coupon -> coupon.getPrice() < couponMaxPrice)
                 .collect(Collectors.toList());
     }
 

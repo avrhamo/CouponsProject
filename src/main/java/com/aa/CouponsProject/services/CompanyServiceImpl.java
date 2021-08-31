@@ -18,12 +18,14 @@ public class CompanyServiceImpl extends ClientService implements CompanyService{
     Company company;
 
     @Override
-    public boolean login(String email, String password) {
-        boolean correctLoginDetails = companyRepository.existsByEmailAndPassword(email, password);
-        if (correctLoginDetails)
-            company = companyRepository.findByEmailAndPassword(email, password);
+    public boolean login(String email, String password) throws CouponSystemCustomExceptions {
 
-        return correctLoginDetails;
+        if (companyRepository.existsByEmailAndPassword(email, password))
+            company = companyRepository.findByEmailAndPassword(email, password);
+        else
+            throw new CouponSystemCustomExceptions(ErrMsg.WRONG_LOGIN_DETAILS);
+
+        return true;
     }
 
     @Override
@@ -43,10 +45,10 @@ public class CompanyServiceImpl extends ClientService implements CompanyService{
     public void updateCoupon(Coupon coupon) throws CouponSystemCustomExceptions {
 
         if (couponRepository.getById(coupon.getId()).getCompany().getId() == company.getId())
-            throw new CouponSystemCustomExceptions(ErrMsg.UPDATING_COUPON_ID_OR_COMPANY_ID_DISALLOWED);
+            throw new CouponSystemCustomExceptions(ErrMsg.UPDATING_COUPON_IS_OR_COMPANY_IS_DISALLOWED);
 
         if (couponRepository.getByCompanyId(coupon.getCompany().getId()).equals(coupon))
-            throw new CouponSystemCustomExceptions(ErrMsg.UPDATING_COUPON_ID_OR_COMPANY_ID_DISALLOWED);
+            throw new CouponSystemCustomExceptions(ErrMsg.UPDATING_COUPON_IS_OR_COMPANY_IS_DISALLOWED);
 
         couponRepository.saveAndFlush(coupon);
     }
@@ -73,7 +75,7 @@ public class CompanyServiceImpl extends ClientService implements CompanyService{
         return company
                 .getCoupons()
                 .stream()
-                .filter(coupon -> coupon.getPrice() <= maxPrice)
+                .filter(coupon -> coupon.getPrice() < maxPrice)
                 .collect(Collectors.toList());
     }
 
